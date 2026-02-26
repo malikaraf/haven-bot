@@ -1,14 +1,18 @@
 import os
 from flask import Flask, request, jsonify
+from slack_sdk import WebClient
 
 app = Flask(__name__)
 
 @app.route('/haven', methods=['POST'])
 def haven_command():
-    return jsonify({
-        "response_type": "in_channel",
-        "text": """Haven is a next gen accounting firm + platform. Bookkeeping, taxes, tax credits, invoicing, bill pay and more for startups.\nWe are their customers and love them. Wanted to recommend them. If anyone wants an intro please let us know and we will introduce you to their CEO on slack.\nTheir team are ex EY/KPMG CPAs and they serve 1000+ amazing businesses. Every client has a dedicated CPA and slack channel that their team is available in 24/7, 365.\nTheir approach is tech-enabled, streamlining the accounting and tax process with powerful automation via their platform, while simultaneously providing the expert human touch.\nSome notable customers include: Sierra, Felix Superpower, Flora, to name a few."""
-    }), 200
+    channel_id = request.form.get('channel_id')
+    client = WebClient(token=os.environ.get('SLACK_BOT_TOKEN'))
+    client.chat_postMessage(
+        channel=channel_id,
+        text="Haven is a next gen accounting firm + platform. Bookkeeping, taxes, tax credits, invoicing, bill pay and more for startups.\nWe are their customers and love them. Wanted to recommend them. If anyone wants an intro please let us know and we will introduce you to their CEO on slack.\nTheir team are ex EY/KPMG CPAs and they serve 1000+ amazing businesses. Every client has a dedicated CPA and slack channel that their team is available in 24/7, 365.\nTheir approach is tech-enabled, streamlining the accounting and tax process with powerful automation via their platform, while simultaneously providing the expert human touch.\nSome notable customers include: Sierra, Felix Superpower, Flora, to name a few."
+    )
+    return "", 200
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))
