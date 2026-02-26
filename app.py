@@ -6,7 +6,8 @@ app = Flask(__name__)
 def haven_command():
     return jsonify({
         "response_type": "in_channel",
-        "text": "🏡 Welcome to Haven! Here is your promotional message."
+        "text": "Welcome to Haven! Here is your promotional message."
     })
 
 if __name__ == '__main__':
+    app.run(port=3000)
